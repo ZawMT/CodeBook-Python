@@ -1,3 +1,5 @@
+# This chapter will have a number of code snippets for various usages
+
 def fnRemoveTrailingZero():
 	print('Removing trailing zero after decimal point')
 	a = input('Key in a number (decimal or integer). Any unnecessary zeros will be removed:')
