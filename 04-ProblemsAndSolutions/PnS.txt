@@ -1,0 +1,25 @@
+Problems:
+1: TypeError: Object of type Decimal is not JSON serializable
+
+Solutions:
+1:
+	Serializing a decimal number to a json object will cause this error. 
+	The solution is to use string instead of a decimal.
+	So in the case of db query of which the result will be automatically serialized to a json object:
+	
+	Example:
+	In the following codes, 
+	'cols' is the list of the column, and 'dhnd.query_data' is a library which will query the data and return the json result.
+	
+	cols=['transactiontime', 'name', 'amount_usd'] 
+    recTran = dhnd.query_data(tableName, cols, ['transaction_id'], [transactionID])
+	
+	When amount_usd is a decimal number, then this will cause the error.
+	
+	The solution is:
+	To use the facility of DB to cast the decimal value to string.
+	In the above example, the DB is MySQL and the decimal value can be casted to stirng as follows:
+	cast(amount_usd as char) as amount_usd
+	
+	So changing cols=['transactiontime', 'name', 'amount_usd'] to cols=['transactiontime', 'name', 'cast(amount_usd as char) as amount_usd'] will resolve the issue. 
+	But the solution differs from one DB to another.
