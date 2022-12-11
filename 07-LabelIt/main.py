@@ -64,14 +64,14 @@ def render_txts1(inputVals):
             iMaxWd = translate_coord(imgW, inputVals[('-txtMaxW-', i)])
             strAlign = inputVals[('-cboAlign-', i)]
             text_draw = ImageDraw.Draw(img)            
-            _, _, tmpW, _ = text_draw.textbbox((0, 0), strTxt, font=ImageFont.truetype("/arial.ttf", iZ, encoding='unic'))
+            _, _, tmpW, _ = text_draw.textbbox((0, 0), strTxt, font=ImageFont.truetype("arial.ttf", iZ))
             if strAlign == 'Center':
                 iX = translate_coord(imgW, inputVals[('-txtX-', i)]) - (tmpW/2)
-                text_draw.text((iX, iY), strTxt, fill=(iR, iG, iB, 255), font=ImageFont.truetype("/arial.ttf", iZ, encoding='unic'))
+                text_draw.text((iX, iY), strTxt, fill=(iR, iG, iB, 255), font=ImageFont.truetype("arial.ttf", iZ))
                 text_draw.line([(iXAbs - (iMaxWd/2), iY), (iXAbs + (iMaxWd/2), iY)], fill=(iR, iG, iB, 255), width=5)
             else:
                 iX = translate_coord(imgW, inputVals[('-txtX-', i)])
-                text_draw.text((iX, iY), strTxt, fill=(iR, iG, iB, 255), font=ImageFont.truetype("/arial.ttf", iZ, encoding='unic'))
+                text_draw.text((iX, iY), strTxt, fill=(iR, iG, iB, 255), font=ImageFont.truetype("arial.ttf", iZ))
                 text_draw.line([(iXAbs, iY), (iXAbs + iMaxWd, iY)], fill=(iR, iG, iB, 255), width=5)
         i = i + 1
     img.thumbnail((Wd1, Ht1))
@@ -93,7 +93,7 @@ def render_txts2(inputVals):
         iG = int(inputVals[('-txtTG-', 0)])
         iB = int(inputVals[('-txtTB-', 0)])
         text_draw = ImageDraw.Draw(img)            
-        text_draw.text((iX, iY), strTxt, fill=(iR, iG, iB, 255), font=ImageFont.truetype("/arial.ttf", iZ, encoding='unic'))
+        text_draw.text((iX, iY), strTxt, fill=(iR, iG, iB, 255), font=ImageFont.truetype("arial.ttf", iZ))
     img.thumbnail((Wd2, Ht2))
     bio = io.BytesIO()
     img.save(bio, format="PNG")
