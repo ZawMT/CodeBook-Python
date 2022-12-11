@@ -58,21 +58,21 @@ def render_txts1(inputVals):
             iXAbs = translate_coord(imgW, inputVals[('-txtX-', i)])
             iY = translate_coord(imgH, inputVals[('-txtY-', i)])
             iZ = translate_coord(imgH, inputVals[('-txtZ-', i)])
-            fntToUse = ImageFont.truetype("Arial.ttf", iZ) 
+            fntArial = ImageFont.truetype("Arial.ttf", iZ)
             iR = int(inputVals[('-txtR-', i)])
             iG = int(inputVals[('-txtG-', i)])
             iB = int(inputVals[('-txtB-', i)])
             iMaxWd = translate_coord(imgW, inputVals[('-txtMaxW-', i)])
             strAlign = inputVals[('-cboAlign-', i)]
-            text_draw = ImageDraw.Draw(img)
-            _, _, tmpW, _ = text_draw.textbbox((0, 0), strTxt, font=fntToUse)
+            text_draw = ImageDraw.Draw(img)            
+            _, _, tmpW, _ = text_draw.textbbox((0, 0), strTxt, font=fntArial)
             if strAlign == 'Center':
                 iX = translate_coord(imgW, inputVals[('-txtX-', i)]) - (tmpW/2)
-                text_draw.text((iX, iY), strTxt, fill=(iR, iG, iB, 255), font=fntToUse)
+                text_draw.text((iX, iY), strTxt, fill=(iR, iG, iB, 255), font=fntArial)
                 text_draw.line([(iXAbs - (iMaxWd/2), iY), (iXAbs + (iMaxWd/2), iY)], fill=(iR, iG, iB, 255), width=5)
             else:
                 iX = translate_coord(imgW, inputVals[('-txtX-', i)])
-                text_draw.text((iX, iY), strTxt, fill=(iR, iG, iB, 255), font=fntToUse)
+                text_draw.text((iX, iY), strTxt, fill=(iR, iG, iB, 255), font=fntArial)
                 text_draw.line([(iXAbs, iY), (iXAbs + iMaxWd, iY)], fill=(iR, iG, iB, 255), width=5)
         i = i + 1
     img.thumbnail((Wd1, Ht1))
@@ -90,11 +90,12 @@ def render_txts2(inputVals):
         iX = translate_coord(imgW, inputVals[('-txtTX-', 0)])
         iY = translate_coord(imgH, inputVals[('-txtTY-', 0)])
         iZ = translate_coord(imgH, inputVals[('-txtTZ-', 0)])
+        fntArial = ImageFont.truetype("Arial.ttf", iZ)
         iR = int(inputVals[('-txtTR-', 0)])
         iG = int(inputVals[('-txtTG-', 0)])
         iB = int(inputVals[('-txtTB-', 0)])
         text_draw = ImageDraw.Draw(img)            
-        text_draw.text((iX, iY), strTxt, fill=(iR, iG, iB, 255), font=ImageFont.truetype("arial.ttf", iZ))
+        text_draw.text((iX, iY), strTxt, fill=(iR, iG, iB, 255), font=fntArial)
     img.thumbnail((Wd2, Ht2))
     bio = io.BytesIO()
     img.save(bio, format="PNG")
@@ -149,13 +150,13 @@ def main():
     layout = [ 
     [
         [
-            sg.Text("Image File 1"),
+            sg.Text("Cert Image"),
             sg.Input(size=(25, 1), enable_events=True, key="-FILE-"),
             sg.FileBrowse(file_types=file_types),
             sg.Button("+",enable_events=True, key=("-AddTxt-")),
             sg.Button("Render",enable_events=True, key=("-Render-")),            
             sg.Column([[
-                sg.Text("Image File 2"),
+                sg.Text("Ticket Image"),
                 sg.Input(size=(25, 1), enable_events=True, key="-TFILE-"),
                 sg.FileBrowse(file_types=file_types),
                 sg.Button("Render",enable_events=True, key=("-TRender-")),
@@ -209,7 +210,7 @@ def main():
             ]])
         ],
         [
-            sg.Text("Labels for Image 1")
+            sg.Text("Labels for Cert")
         ],
         [
             sg.Column(
@@ -237,7 +238,7 @@ def main():
             ]
         ],
         [
-            sg.Text("Label for Image 2")
+            sg.Text("Label for Ticket")
         ],
         [
             [
@@ -258,7 +259,7 @@ def main():
             ]
         ]
     ]
-    window = sg.Window("Image Viewer", layout)
+    window = sg.Window("Extra config", layout)
     evtDetail1 = ""
     evtDetail2 = ""
     while True:
@@ -316,3 +317,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+# Notes
+# To install to get exe for Windows: pyinstaller --onefile main.py # Other dependent files will be included automatically
