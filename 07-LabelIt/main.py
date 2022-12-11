@@ -7,20 +7,19 @@ from PIL import Image, ImageDraw, ImageFont
 
 import jsonHelper as jsh
 
-file_types = [("JPEG (*.jpg)", "*.jpg"),
-              ("PNG (*.png)", "*.png")]
+file_types = [("PNG (*.png)", "*.png"), ("JPEG (*.jpg)", "*.jpg")]
 
 BLACK_COLOR = (0, 0, 0)
 
 # UI Picture View size
-Wd1S = 35
-Ht1S = 25
-Wd1L = 350
-Ht1L = 250
-Wd2S = 30
-Ht2S = 15
+Wd1S = 350
+Ht1S = 250
+Wd1L = 550
+Ht1L = 350
+Wd2S = 200
+Ht2S = 150
 Wd2L = 300
-Ht2L = 150
+Ht2L = 250
 Wd1 = Wd1S
 Ht1 = Ht1S
 Wd2 = Wd2S
@@ -65,14 +64,14 @@ def render_txts1(inputVals):
             iMaxWd = translate_coord(imgW, inputVals[('-txtMaxW-', i)])
             strAlign = inputVals[('-cboAlign-', i)]
             text_draw = ImageDraw.Draw(img)            
-            _, _, tmpW, _ = text_draw.textbbox((0, 0), strTxt, font=ImageFont.truetype("arial.ttf", iZ))
+            _, _, tmpW, _ = text_draw.textbbox((0, 0), strTxt, font=ImageFont.truetype("/arial.ttf", iZ, encoding='unic'))
             if strAlign == 'Center':
                 iX = translate_coord(imgW, inputVals[('-txtX-', i)]) - (tmpW/2)
-                text_draw.text((iX, iY), strTxt, fill=(iR, iG, iB, 255), font=ImageFont.truetype("arial.ttf", iZ))
+                text_draw.text((iX, iY), strTxt, fill=(iR, iG, iB, 255), font=ImageFont.truetype("/arial.ttf", iZ, encoding='unic'))
                 text_draw.line([(iXAbs - (iMaxWd/2), iY), (iXAbs + (iMaxWd/2), iY)], fill=(iR, iG, iB, 255), width=5)
             else:
                 iX = translate_coord(imgW, inputVals[('-txtX-', i)])
-                text_draw.text((iX, iY), strTxt, fill=(iR, iG, iB, 255), font=ImageFont.truetype("arial.ttf", iZ))
+                text_draw.text((iX, iY), strTxt, fill=(iR, iG, iB, 255), font=ImageFont.truetype("/arial.ttf", iZ, encoding='unic'))
                 text_draw.line([(iXAbs, iY), (iXAbs + iMaxWd, iY)], fill=(iR, iG, iB, 255), width=5)
         i = i + 1
     img.thumbnail((Wd1, Ht1))
