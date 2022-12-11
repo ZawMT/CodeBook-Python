@@ -12,10 +12,10 @@ file_types = [("PNG (*.png)", "*.png"), ("JPEG (*.jpg)", "*.jpg")]
 BLACK_COLOR = (0, 0, 0)
 
 # UI Picture View size
-Wd1S = 350
-Ht1S = 250
-Wd1L = 550
-Ht1L = 350
+Wd1S = 450
+Ht1S = 350
+Wd1L = 750
+Ht1L = 550
 Wd2S = 200
 Ht2S = 150
 Wd2L = 300
