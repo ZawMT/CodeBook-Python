@@ -58,20 +58,21 @@ def render_txts1(inputVals):
             iXAbs = translate_coord(imgW, inputVals[('-txtX-', i)])
             iY = translate_coord(imgH, inputVals[('-txtY-', i)])
             iZ = translate_coord(imgH, inputVals[('-txtZ-', i)])
+            fntToUse = ImageFont.truetype("Arial.ttf", iZ) 
             iR = int(inputVals[('-txtR-', i)])
             iG = int(inputVals[('-txtG-', i)])
             iB = int(inputVals[('-txtB-', i)])
             iMaxWd = translate_coord(imgW, inputVals[('-txtMaxW-', i)])
             strAlign = inputVals[('-cboAlign-', i)]
-            text_draw = ImageDraw.Draw(img)            
-            _, _, tmpW, _ = text_draw.textbbox((0, 0), strTxt, font=ImageFont.truetype("arial.ttf", iZ))
+            text_draw = ImageDraw.Draw(img)
+            _, _, tmpW, _ = text_draw.textbbox((0, 0), strTxt, font=fntToUse)
             if strAlign == 'Center':
                 iX = translate_coord(imgW, inputVals[('-txtX-', i)]) - (tmpW/2)
-                text_draw.text((iX, iY), strTxt, fill=(iR, iG, iB, 255), font=ImageFont.truetype("arial.ttf", iZ))
+                text_draw.text((iX, iY), strTxt, fill=(iR, iG, iB, 255), font=fntToUse)
                 text_draw.line([(iXAbs - (iMaxWd/2), iY), (iXAbs + (iMaxWd/2), iY)], fill=(iR, iG, iB, 255), width=5)
             else:
                 iX = translate_coord(imgW, inputVals[('-txtX-', i)])
-                text_draw.text((iX, iY), strTxt, fill=(iR, iG, iB, 255), font=ImageFont.truetype("arial.ttf", iZ))
+                text_draw.text((iX, iY), strTxt, fill=(iR, iG, iB, 255), font=fntToUse)
                 text_draw.line([(iXAbs, iY), (iXAbs + iMaxWd, iY)], fill=(iR, iG, iB, 255), width=5)
         i = i + 1
     img.thumbnail((Wd1, Ht1))
