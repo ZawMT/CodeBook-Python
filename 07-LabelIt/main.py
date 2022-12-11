@@ -13,10 +13,19 @@ file_types = [("JPEG (*.jpg)", "*.jpg"),
 BLACK_COLOR = (0, 0, 0)
 
 # UI Picture View size
-Wd1 = 550
-Ht1 = 450
-Wd2 = 500
-Ht2 = 350
+Wd1S = 35
+Ht1S = 25
+Wd1L = 350
+Ht1L = 250
+Wd2S = 30
+Ht2S = 15
+Wd2L = 300
+Ht2L = 150
+Wd1 = Wd1S
+Ht1 = Ht1S
+Wd2 = Wd2S
+Ht2 = Ht2S
+
 image1Ready = False
 image2Ready = False
 window = None
@@ -28,12 +37,23 @@ def translate_coord(iTotalWdHt, val):
         return int(iTotalWdHt * float(val))
     return int(val)
 
+def resizeImage(ImgNo, inputVals):
+    global Wd1, Ht1, Wd2, Ht2 
+    if ImgNo == 1:
+        Wd1 = Wd1S if Wd1 == Wd1L else Wd1L
+        Ht1 = Ht1S if Ht1 == Ht1L else Ht1L
+        render_txts1(inputVals)
+    else:
+        Wd2 = Wd2S if Wd2 == Wd2L else Wd2L
+        Ht2 = Ht2S if Ht2 == Ht2L else Ht2L
+        render_txts2(inputVals)
+
 def render_txts1(inputVals):
     img = Image.open(inputVals["-FILE-"])
     img = img.convert("RGB", colors=255)
     imgW, imgH = img.size
     i = 0
-    while ('-txtName-', i) in window.AllKeysDict: # inputVals[('-txtName-', i)]:
+    while ('-txtName-', i) in window.AllKeysDict:
         if len(inputVals[('-txtName-', i)]) > 0:
             strTxt = inputVals[('-txtName-', i)]
             iXAbs = translate_coord(imgW, inputVals[('-txtX-', i)])
@@ -133,19 +153,59 @@ def main():
             sg.Input(size=(25, 1), enable_events=True, key="-FILE-"),
             sg.FileBrowse(file_types=file_types),
             sg.Button("+",enable_events=True, key=("-AddTxt-")),
-            sg.Button("Render",enable_events=True, key=("-Render-")),
-            sg.Button("Copy settings",enable_events=True, key=("-Copy1-")),
+            sg.Button("Render",enable_events=True, key=("-Render-")),            
             sg.Column([[
                 sg.Text("Image File 2"),
                 sg.Input(size=(25, 1), enable_events=True, key="-TFILE-"),
                 sg.FileBrowse(file_types=file_types),
-                sg.Button("Render",enable_events=True, key=("-TRender-"))
+                sg.Button("Render",enable_events=True, key=("-TRender-")),
+                sg.Button("Copy settings",enable_events=True, key=("-CopySettings-"))
             ]])
         ],
         [
-            sg.Image(key="-IMAGE-"),
+            sg.Text("Facebook URL:"),
+            sg.InputText(size=(20,1),key = "-txtFbUrl-", default_text = "no_fb_url"),
+            sg.Text("Web site:"),
+            sg.InputText(size=(20,1),key = "-txtWebUrl-", default_text = "no_web_site"),
+            sg.Text("Campaign Email:"),
+            sg.InputText(size=(20,1),key = "-txtEmailCampaign-", default_text = ""),
+            sg.Text("Email template:"),
+            sg.InputText(size=(20,1),key = "-txtEmailTmpl-", default_text = ""),
+            sg.Text("Void template:"),
+            sg.InputText(size=(20,1),key = "-txtVoidTmpl-", default_text = ""),
+        ],
+        [
+            sg.Text("CC (only one address will be used):"),
+            sg.InputText(size=(20,1),key = "-txtCC-", default_text = ""),
+            sg.Combo([
+                'FR CC', 
+                'FR Primary', 
+                'FR Additional', 
+                'FR CC then Primary',
+                'FR CC then Additional',
+                'FR Primary then CC',
+                'FR Primary then Additional',
+                'FR Additional then CC',
+                'FR Additional then Primary',
+                'FR CC then Primary then Additional',
+                'FR CC then Additional then Primary',
+                'FR Primary then CC then Additional',
+                'FR Primary then Additional then CC',
+                'FR Additional then Primary then CC',
+                'FR Additional then CC then Primary'
+            ], default_value='FR CC',key="-cboCC-")
+        ],
+        [
+            sg.Text("CC for void(all will be used):"),
+            sg.InputText(size=(20,1),key = "-txtCCVoid-", default_text = ""),
+            sg.Checkbox("FR CC", key="-chkVFrCC-"),
+            sg.Checkbox("FR Primary", key="-chkVFrPrimary-"),
+            sg.Checkbox("FR Additional", key="-chkVFrAdditional-")
+        ],
+        [
+            sg.Image(key="-IMAGE-", enable_events=True),
             sg.Column([[
-                sg.Image(key="-TIMAGE-")
+                sg.Image(key="-TIMAGE-", enable_events=True)
             ]])
         ],
         [
@@ -182,19 +242,19 @@ def main():
         [
             [
                 sg.T("Name: "), 
-                sg.InputText(size=(25,1),key=("-txtTName-", 0)), 
+                sg.InputText(size=(25,1),key="-txtTName-"), 
                 sg.T("X"), 
-                sg.InputText(size=(10,1),key=("-txtTX-", 0), default_text = "0.5"),
+                sg.InputText(size=(10,1),key="-txtTX-", default_text = "0.5"),
                 sg.T("Y"), 
-                sg.InputText(size=(10,1),key=("-txtTY-", 0), default_text = "0.5"),
+                sg.InputText(size=(10,1),key="-txtTY-", default_text = "0.5"),
                 sg.T("Size"), 
-                sg.InputText(size=(5,1),key=("-txtTZ-", 0), default_text = "20"),
+                sg.InputText(size=(5,1),key="-txtTZ-", default_text = "20"),
                 sg.T("R"), 
-                sg.InputText(size=(10,1),key=("-txtTR-", 0), default_text = "0"),
+                sg.InputText(size=(10,1),key="-txtTR-", default_text = "0"),
                 sg.T("G"), 
-                sg.InputText(size=(10,1),key=("-txtTG-", 0), default_text = "0"),
+                sg.InputText(size=(10,1),key="-txtTG-", default_text = "0"),
                 sg.T("B"), 
-                sg.InputText(size=(5,1),key=("-txtTB-", 0), default_text = "0")
+                sg.InputText(size=(5,1),key="-txtTB-", default_text = "0")
             ]
         ]
     ]
@@ -233,8 +293,13 @@ def main():
                 sg.Popup("First load Image 2")
             else:
                 render_txts2(values)
-        if event == "-Copy1-":
-            pyc.copy(jsh.getJson(values))
+        if event == "-CopySettings-":
+            strRet = jsh.getJson(values, window.AllKeysDict)
+            if strRet[0:5] == "ERROR":
+                sg.Popup(strRet)
+            else:
+                pyc.copy(strRet)
+                sg.Popup("Json settings are alread copied into clipboard. You can paste in any text editor to use it.")
         if event == "-AddTxt-":
             window.extend_layout(window['-txtToRender-'], add_row(iRowIndx))
             iRowCnt = iRowCnt + 1
@@ -242,7 +307,11 @@ def main():
         if type(event) is tuple:
             evtDetail1, evtDetail2 = event
             if evtDetail1 == "-RemoveTxt-":
-                hide_row(evtDetail2)          
+                hide_row(evtDetail2)  
+        if event == "-IMAGE-":
+            resizeImage(1, values)
+        if event == "-TIMAGE-":
+            resizeImage(2, values)    
     window.close()
 
 if __name__ == "__main__":
