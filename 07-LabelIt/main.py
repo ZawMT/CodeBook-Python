@@ -85,15 +85,15 @@ def render_txts2(inputVals):
     img = Image.open(inputVals["-TFILE-"])
     img = img.convert("RGB", colors=255)
     imgW, imgH = img.size
-    strTxt = inputVals[('-txtTName-', 0)]
+    strTxt = inputVals['-txtTName-']
     if len(strTxt) > 0:
-        iX = translate_coord(imgW, inputVals[('-txtTX-', 0)])
-        iY = translate_coord(imgH, inputVals[('-txtTY-', 0)])
-        iZ = translate_coord(imgH, inputVals[('-txtTZ-', 0)])
+        iX = translate_coord(imgW, inputVals['-txtTX-'])
+        iY = translate_coord(imgH, inputVals['-txtTY-'])
+        iZ = translate_coord(imgH, inputVals['-txtTZ-'])
         fntArial = ImageFont.truetype("Arial.ttf", iZ)
-        iR = int(inputVals[('-txtTR-', 0)])
-        iG = int(inputVals[('-txtTG-', 0)])
-        iB = int(inputVals[('-txtTB-', 0)])
+        iR = int(inputVals['-txtTR-'])
+        iG = int(inputVals['-txtTG-'])
+        iB = int(inputVals['-txtTB-'])
         text_draw = ImageDraw.Draw(img)            
         text_draw.text((iX, iY), strTxt, fill=(iR, iG, iB, 255), font=fntArial)
     img.thumbnail((Wd2, Ht2))
